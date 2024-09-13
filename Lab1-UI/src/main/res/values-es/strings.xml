@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Labs20242-Gr06</string>
+    <string name="title_activity_personal_data">Información Personal</string>
+    <string name="title_activity_contact_data">Información de Contacto</string>
+    <string name="name">Nombres</string>
+    <string name="last_name">Apellidos</string>
+    <string name="gender">Sexo</string>
+    <string name="birth_date">Fecha de nacimiento</string>
+    <string name="scholar_grade">Grado de escolaridad</string>
+    <string name="female">Femenino</string>
+    <string name="male">Masculino</string>
+    <string name="elementary">Primaria</string>
+    <string name="secondary">Secundaria</string>
+    <string name="university">Universidad</string>
+    <string name="other">Otro</string>
+    <string name="change">Cambiar</string>
+    <string name="phone">Celular</string>
+    <string name="email">Email</string>
+    <string name="country">País</string>
+    <string name="city">Ciudad</string>
+    <string name="address">Dirección</string>
+    <string name="next">Siguiente</string>
+    <string name="personal_data_log">Nombre: %s, Apellido: %s, Sexo: %s, Fecha nacimiento: %s, Grado escolaridad: %s</string>
+    <string name="contact_data_log">Telefono: %s, Dirección: %s, Email: %s, País: %s, Ciudad: %s</string>
+</resources>
