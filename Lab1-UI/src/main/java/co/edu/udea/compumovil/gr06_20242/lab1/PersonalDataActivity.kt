@@ -2,6 +2,7 @@ package co.edu.udea.compumovil.gr06_20242.lab1
 
 import android.app.DatePickerDialog
 import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_SQUARE
 import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.border
@@ -22,10 +23,9 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -61,7 +61,7 @@ fun PersonalDataScreen(navController: NavController) {
     val title = stringResource(id = R.string.title_activity_personal_data)
     val birthDateLabel = stringResource(id = R.string.birth_date)
     val scholarGradeLabel = stringResource(id = R.string.scholar_grade)
-    var genderOptions = listOf(stringResource(R.string.female), stringResource(R.string.male))
+    val genderOptions = listOf(stringResource(R.string.female), stringResource(R.string.male))
     val scholarSelectedItem = rememberSaveable { mutableStateOf(scholarGradeLabel) }
 
     val configuration = LocalConfiguration.current
@@ -80,7 +80,7 @@ fun PersonalDataScreen(navController: NavController) {
                     top.linkTo(parent.top)
                 }) {
                     Title(title)
-                    Divider(color = Color.Gray, thickness = 1.dp)
+                    HorizontalDivider(thickness = 1.dp, color = Color.Gray)
                     NameField(name) { name = it }
                     LastNameField(lastName) { lastName = it }
                     GenderRadioButtonGroup(genderOptions, selectedOption)
@@ -103,7 +103,7 @@ fun PersonalDataScreen(navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Title(title)
-                    Divider(color = Color.Gray, thickness = 1.dp)
+                    HorizontalDivider(thickness = 1.dp, color = Color.Gray)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                         NameField(name) { name = it }
                         LastNameField(lastName) { lastName = it }
@@ -117,6 +117,13 @@ fun PersonalDataScreen(navController: NavController) {
                     }
                 }
             }
+        }
+        Configuration.ORIENTATION_UNDEFINED -> {
+            TODO()
+        }
+
+        ORIENTATION_SQUARE -> {
+            TODO()
         }
     }
 
@@ -217,7 +224,7 @@ fun IconComponent (icon: ImageVector, textFieldIcon: Boolean = false) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun TextFieldComponent (
     text: String,
