@@ -72,7 +72,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun ContactDataScreen(navController: NavController) {
+fun ContactDataScreen(navController: NavController,sharedData: SharedData) {
     val title = stringResource(R.string.title_activity_contact_data)
     val phoneLabel = stringResource(id = R.string.phone)
     val addressLabel = stringResource(id = R.string.address)
@@ -88,14 +88,14 @@ fun ContactDataScreen(navController: NavController) {
 
     val configuration = LocalConfiguration.current
 
+    // Layout based on orientation
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> {
             ConstraintLayout {
                 val (form) = createRefs()
                 Column(modifier = Modifier.constrainAs(form) {
                     top.linkTo(parent.top)
-                }
-                ) {
+                }) {
                     Title(title)
                     Divider(color = Color.Gray, thickness = 1.dp)
                     PhoneFiled(phone, onLastNameChange = { phone = it })
@@ -112,8 +112,7 @@ fun ContactDataScreen(navController: NavController) {
                 val (form) = createRefs()
                 Column(modifier = Modifier.constrainAs(form) {
                     top.linkTo(parent.top)
-                }
-                ) {
+                }) {
                     Title(title)
                     Divider(color = Color.Gray, thickness = 1.dp)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -129,6 +128,7 @@ fun ContactDataScreen(navController: NavController) {
             }
         }
     }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
@@ -136,24 +136,40 @@ fun ContactDataScreen(navController: NavController) {
     ) {
         Button(
             onClick = {
-                Log.i(
-                    "CONTACT_DATA_LOG",
-                    "$title: " +
-                            "\n$phoneLabel: $phone" +
-                            if (address.isNotEmpty()) {
-                                "\n$addressLabel: $address"
-                            } else {
-                                ""
-                            }
-                            + "\n$emailLabel: $email "
-                            + "\n$countryLabel: ${country.value}" +
-                            if (city.value.isNotEmpty()) {
-                                "\n$cityLabel: ${city.value}"
-                            } else {
-                                ""
-                            }
-                )
+                // Guardar datos de contacto en sharedData
                 if (phone.isNotEmpty() && email.isNotEmpty() && country.value.isNotEmpty()) {
+                    sharedData.phone = phone
+                    sharedData.email = email
+                    sharedData.address = address
+                    sharedData.country = country.value
+                    sharedData.city = city.value
+
+                    // Imprimir todos los datos, tanto personales como de contacto
+                    Log.i(
+                        "FULL_DATA_LOG",
+                        "Datos personales: " +
+                                "\nNombre: ${sharedData.name}" +
+                                "\nApellido: ${sharedData.lastName}" +
+                                "\nGénero: ${sharedData.gender}" +
+                                "\nFecha de nacimiento: ${sharedData.birthDate}" +
+                                "\nEscolaridad: ${sharedData.scholarGrade}" +
+                                "\n\nDatos de contacto: " +
+                                "\n$phoneLabel: $phone" +
+                                if (address.isNotEmpty()) {
+                                    "\n$addressLabel: $address"
+                                } else {
+                                    ""
+                                }
+                                + "\n$emailLabel: $email" +
+                                "\n$countryLabel: ${country.value}" +
+                                if (city.value.isNotEmpty()) {
+                                    "\n$cityLabel: ${city.value}"
+                                } else {
+                                    ""
+                                }
+                    )
+
+                    // Regresar a la pantalla anterior
                     navController.popBackStack()
                 }
             },
@@ -164,6 +180,7 @@ fun ContactDataScreen(navController: NavController) {
         }
     }
 }
+
 
 @Composable
 fun PhoneFiled(
@@ -217,12 +234,16 @@ fun CountryField(category: MutableState<String>) {
         IconComponent(Icons.Default.Home, true)
         AutoComplete(
             listOf(
-                "Colombia",
                 "Argentina",
-                "Brazil",
+                "Bolivia",
+                "Brasil",
+                "Colombia",
                 "Chile",
                 "Ecuador",
+                "Guyana",
+                "Paraguay",
                 "Peru",
+                "Uruguay",
                 "Venezuela"
             ),
             "${stringResource(R.string.country)}*", category

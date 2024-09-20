@@ -18,31 +18,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Labs20242Gr06Theme() {
-                // A surface container using the 'background' color from the theme
+            Labs20242Gr06Theme {
+                // Contenedor de superficie utilizando el color de 'background' del tema
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Navigation()
+                    Navigation() // Llama a la función de navegación
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Labs20242Gr06Theme {
-        Greeting("Android")
     }
 }

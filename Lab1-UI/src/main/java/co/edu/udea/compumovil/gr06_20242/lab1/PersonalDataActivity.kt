@@ -3,7 +3,6 @@ package co.edu.udea.compumovil.gr06_20242.lab1
 import android.app.DatePickerDialog
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_SQUARE
-import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -57,7 +56,7 @@ import java.util.Calendar
 import java.util.Date
 
 @Composable
-fun PersonalDataScreen(navController: NavController) {
+fun PersonalDataScreen(navController: NavController, sharedData: SharedData) {
     val title = stringResource(id = R.string.title_activity_personal_data)
     val birthDateLabel = stringResource(id = R.string.birth_date)
     val scholarGradeLabel = stringResource(id = R.string.scholar_grade)
@@ -71,7 +70,7 @@ fun PersonalDataScreen(navController: NavController) {
     val selectedOption = rememberSaveable { mutableStateOf("") }
     val mDate = rememberSaveable { mutableStateOf("$birthDateLabel*") }
 
-
+    // Layout based on orientation
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> {
             ConstraintLayout {
@@ -85,9 +84,7 @@ fun PersonalDataScreen(navController: NavController) {
                     LastNameField(lastName) { lastName = it }
                     GenderRadioButtonGroup(genderOptions, selectedOption)
                     BirthDateComponent(mDate)
-                    ScholarGradeSpinner(
-                        scholarSelectedItem
-                    ) { selected ->
+                    ScholarGradeSpinner(scholarSelectedItem) { selected ->
                         scholarSelectedItem.value = selected
                     }
                 }
@@ -110,19 +107,18 @@ fun PersonalDataScreen(navController: NavController) {
                     }
                     GenderRadioButtonGroup(genderOptions, selectedOption)
                     BirthDateComponent(mDate)
-                    ScholarGradeSpinner(
-                        scholarSelectedItem
-                    ) { selected ->
+                    ScholarGradeSpinner(scholarSelectedItem) { selected ->
                         scholarSelectedItem.value = selected
                     }
                 }
             }
         }
         Configuration.ORIENTATION_UNDEFINED -> {
+            // Handle undefined orientation if necessary
             TODO()
         }
-
         ORIENTATION_SQUARE -> {
+            // Handle square orientation if necessary
             TODO()
         }
     }
@@ -134,28 +130,22 @@ fun PersonalDataScreen(navController: NavController) {
     ) {
         Button(
             onClick = {
-                Log.i(
-                    "PERSONAL_DATA_LOG",
-                    "$title: " +
-                            "\n$name $lastName " +
-                            if (selectedOption.value.isNotEmpty()) {
-                                "\n${selectedOption.value}"
-                            } else {
-                                ""
-                            }
-                            + "\nNació el ${mDate.value} " +
-                            if (scholarSelectedItem.value.isNotEmpty()) {
-                                "\n${scholarSelectedItem.value}"
-                            } else {
-                                ""
-                            }
-                )
                 if (name.isNotEmpty() && lastName.isNotEmpty() && mDate.value != "$birthDateLabel*") {
+                    // Save data to sharedData
+                    sharedData.name= name
+                    sharedData.lastName = lastName
+                    sharedData.gender = selectedOption.value
+                    sharedData.birthDate = mDate.value
+                    sharedData.scholarGrade = scholarSelectedItem.value
+
+                    // Reset fields
                     name = ""
                     lastName = ""
                     selectedOption.value = ""
                     mDate.value = "$birthDateLabel*"
                     scholarSelectedItem.value = scholarGradeLabel
+
+                    // Navigate to ContactDataScreen
                     navController.navigate(route = Screens.ContactDataScreen.route)
                 }
             },

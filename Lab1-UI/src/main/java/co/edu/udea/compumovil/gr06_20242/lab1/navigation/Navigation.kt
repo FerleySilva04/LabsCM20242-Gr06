@@ -6,16 +6,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import co.edu.udea.compumovil.gr06_20242.lab1.ContactDataScreen
 import co.edu.udea.compumovil.gr06_20242.lab1.PersonalDataScreen
+import co.edu.udea.compumovil.gr06_20242.lab1.SharedData
 
 @Composable
-fun Navigation(){
+fun Navigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.PersonalDataScreen.route){
-        composable(route = Screens.PersonalDataScreen.route){
-            PersonalDataScreen(navController)
+    val sharedData = SharedData() // Instancia de SharedData
+
+    NavHost(navController = navController, startDestination = Screens.PersonalDataScreen.route) {
+        composable(route = Screens.PersonalDataScreen.route) {
+            PersonalDataScreen(navController, sharedData) // Pasar sharedData
         }
         composable(route = Screens.ContactDataScreen.route) {
-            ContactDataScreen(navController)
+            ContactDataScreen(navController, sharedData) // Pasar sharedData
         }
     }
 }
