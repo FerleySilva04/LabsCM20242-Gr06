@@ -1,3 +1,4 @@
+
 package co.edu.udea.compumovil.gr06_20242.lab1
 
 import android.content.res.Configuration
@@ -72,7 +73,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun ContactDataScreen(navController: NavController,sharedData: SharedData) {
+fun ContactDataScreen(navController: NavController, sharedData: SharedData) {
     val title = stringResource(R.string.title_activity_contact_data)
     val phoneLabel = stringResource(id = R.string.phone)
     val addressLabel = stringResource(id = R.string.address)
@@ -80,15 +81,16 @@ fun ContactDataScreen(navController: NavController,sharedData: SharedData) {
     val cityLabel = stringResource(id = R.string.city)
     val emailLabel = stringResource(id = R.string.email)
 
-    var phone by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var address by rememberSaveable { mutableStateOf("") }
-    val country = rememberSaveable { mutableStateOf("") }
-    val city = rememberSaveable { mutableStateOf("") }
+    // Inicializar los campos con los valores almacenados en SharedData
+    var phone by rememberSaveable { mutableStateOf(sharedData.phone ?: "") }
+    var email by rememberSaveable { mutableStateOf(sharedData.email ?: "") }
+    var address by rememberSaveable { mutableStateOf(sharedData.address ?: "") }
+    val country = rememberSaveable { mutableStateOf(sharedData.country ?: "") }
+    val city = rememberSaveable { mutableStateOf(sharedData.city ?: "") }
 
     val configuration = LocalConfiguration.current
 
-    // Layout based on orientation
+    // Layout basado en la orientación
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> {
             ConstraintLayout {
@@ -136,7 +138,6 @@ fun ContactDataScreen(navController: NavController,sharedData: SharedData) {
     ) {
         Button(
             onClick = {
-                // Guardar datos de contacto en sharedData
                 if (phone.isNotEmpty() && email.isNotEmpty() && country.value.isNotEmpty()) {
                     sharedData.phone = phone
                     sharedData.email = email
@@ -144,33 +145,8 @@ fun ContactDataScreen(navController: NavController,sharedData: SharedData) {
                     sharedData.country = country.value
                     sharedData.city = city.value
 
-                    // Imprimir todos los datos, tanto personales como de contacto
-                    Log.i(
-                        "FULL_DATA_LOG",
-                        "Datos personales: " +
-                                "\nNombre: ${sharedData.name}" +
-                                "\nApellido: ${sharedData.lastName}" +
-                                "\nGénero: ${sharedData.gender}" +
-                                "\nFecha de nacimiento: ${sharedData.birthDate}" +
-                                "\nEscolaridad: ${sharedData.scholarGrade}" +
-                                "\n\nDatos de contacto: " +
-                                "\n$phoneLabel: $phone" +
-                                if (address.isNotEmpty()) {
-                                    "\n$addressLabel: $address"
-                                } else {
-                                    ""
-                                }
-                                + "\n$emailLabel: $email" +
-                                "\n$countryLabel: ${country.value}" +
-                                if (city.value.isNotEmpty()) {
-                                    "\n$cityLabel: ${city.value}"
-                                } else {
-                                    ""
-                                }
-                    )
-
-                    // Regresar a la pantalla anterior
-                    navController.popBackStack()
+                    // Navegar a la pantalla de visualización de datos
+                    navController.navigate("displayData")
                 }
             },
             Modifier.padding(8.dp),
@@ -178,8 +154,10 @@ fun ContactDataScreen(navController: NavController,sharedData: SharedData) {
         ) {
             Text(stringResource(R.string.next))
         }
+        }
     }
-}
+
+
 
 
 @Composable

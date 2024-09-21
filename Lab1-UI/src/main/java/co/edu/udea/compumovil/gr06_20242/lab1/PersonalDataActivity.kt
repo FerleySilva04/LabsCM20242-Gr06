@@ -1,3 +1,4 @@
+
 package co.edu.udea.compumovil.gr06_20242.lab1
 
 import android.app.DatePickerDialog
@@ -84,9 +85,7 @@ fun PersonalDataScreen(navController: NavController, sharedData: SharedData) {
                     LastNameField(lastName) { lastName = it }
                     GenderRadioButtonGroup(genderOptions, selectedOption)
                     BirthDateComponent(mDate)
-                    ScholarGradeSpinner(scholarSelectedItem) { selected ->
-                        scholarSelectedItem.value = selected
-                    }
+                    ScholarGradeSpinner(scholarSelectedItem) { selected -> scholarSelectedItem.value = selected }
                 }
             }
         }
@@ -107,19 +106,9 @@ fun PersonalDataScreen(navController: NavController, sharedData: SharedData) {
                     }
                     GenderRadioButtonGroup(genderOptions, selectedOption)
                     BirthDateComponent(mDate)
-                    ScholarGradeSpinner(scholarSelectedItem) { selected ->
-                        scholarSelectedItem.value = selected
-                    }
+                    ScholarGradeSpinner(scholarSelectedItem) { selected -> scholarSelectedItem.value = selected }
                 }
             }
-        }
-        Configuration.ORIENTATION_UNDEFINED -> {
-            // Handle undefined orientation if necessary
-            TODO()
-        }
-        ORIENTATION_SQUARE -> {
-            // Handle square orientation if necessary
-            TODO()
         }
     }
 
@@ -130,9 +119,9 @@ fun PersonalDataScreen(navController: NavController, sharedData: SharedData) {
     ) {
         Button(
             onClick = {
-                if (name.isNotEmpty() && lastName.isNotEmpty() && mDate.value != "$birthDateLabel*") {
+                if (name.isNotEmpty() && lastName.isNotEmpty() && mDate.value != "$birthDateLabel*" && selectedOption.value.isNotEmpty()) {
                     // Save data to sharedData
-                    sharedData.name= name
+                    sharedData.name = name
                     sharedData.lastName = lastName
                     sharedData.gender = selectedOption.value
                     sharedData.birthDate = mDate.value
@@ -146,7 +135,9 @@ fun PersonalDataScreen(navController: NavController, sharedData: SharedData) {
                     scholarSelectedItem.value = scholarGradeLabel
 
                     // Navigate to ContactDataScreen
-                    navController.navigate(route = Screens.ContactDataScreen.route)
+                    navController.navigate("contactData")
+                } else {
+                    // Optionally, show a message to the user about incomplete fields
                 }
             },
             Modifier.padding(8.dp),
@@ -156,6 +147,8 @@ fun PersonalDataScreen(navController: NavController, sharedData: SharedData) {
         }
     }
 }
+
+
 
 @Composable
 fun Title(label: String) {
